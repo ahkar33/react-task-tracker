@@ -3,6 +3,9 @@ import Tasks from "./components/Tasks"
 import React, { useEffect, useState } from 'react'
 import AddTask from "./components/AddTask";
 import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Footer from "./components/Footer";
+import About from "./components/About";
 
 const App = () => {
   const [showAddTask, setShowAddTask] = useState(false);
@@ -41,7 +44,7 @@ const App = () => {
 
   const toggleReminder = async (id) => {
     const taskToToggle = await getOneTask(id);
-    const updatedTask = {...taskToToggle, reminder : !taskToToggle.reminder};
+    const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder };
 
     const res = await axios.put(`http://localhost:5000/tasks/${id}`, updatedTask);
     const data = await res.data;
@@ -51,26 +54,38 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <Header
-        title='Task Tracker'
-        onAdd={() => setShowAddTask(!showAddTask)}
-        showAdd={showAddTask}
-      />
-      {
-        showAddTask &&
-        <AddTask onAdd={addTask} />
-      }
-
-      {
-        tasks.length > 0 ?
-          <Tasks tasks={tasks}
-            onDelete={deleteTask}
-            onToggle={toggleReminder}
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                <Header
+                  title='Task Tracker'
+                  onAdd={() => setShowAddTask(!showAddTask)}
+                  showAdd={showAddTask}
+                />
+                {
+                  showAddTask &&
+                  <AddTask onAdd={addTask} />
+                }
+                {
+                  tasks.length > 0 ?
+                    <Tasks tasks={tasks}
+                      onDelete={deleteTask}
+                      onToggle={toggleReminder}
+                    />
+                    : 'No Task To Show'
+                }
+              </>
+            }
           />
-          : 'No Task To Show'
-      }
-    </div>
+          <Route path='/about' element={<About />} />
+        </Routes>
+        <Footer />
+      </div>
+    </BrowserRouter>
   )
 }
 
