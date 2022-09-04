@@ -56,16 +56,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className="App">
+        <Header
+          title='Task Tracker'
+          onAdd={() => setShowAddTask(!showAddTask)}
+          showAdd={showAddTask}
+        />
         <Routes>
           <Route
             path='/'
             element={
               <>
-                <Header
-                  title='Task Tracker'
-                  onAdd={() => setShowAddTask(!showAddTask)}
-                  showAdd={showAddTask}
-                />
                 {
                   showAddTask &&
                   <AddTask onAdd={addTask} />
