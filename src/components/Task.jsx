@@ -13,6 +13,6 @@ const Task = ({ task, onDelete, onToggle }) => {
       <p>{task.day}</p>
     </div>
   )
-}
+} 
 
 export default Task

@@ -1,9 +1,10 @@
 import Header from "./components/Header"
 import Tasks from "./components/Tasks"
 import React, { useState } from 'react'
+import AddTask from "./components/AddTask";
 
 const App = () => {
-
+  const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -25,6 +26,14 @@ const App = () => {
     },
   ]);
 
+  const addTask = (task) => {
+    const id = tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 0;
+    task = { id: id, ...task };
+    setTasks((previousTasks) => {
+      return [...previousTasks, task];
+    });
+  }
+
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id != id));
   }
@@ -36,7 +45,16 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header title='Hello' />
+      <Header
+        title='Task Tracker'
+        onAdd={() => setShowAddTask(!showAddTask)}
+        showAdd={showAddTask}
+      />
+      {
+        showAddTask &&
+        <AddTask onAdd={addTask} />
+      }
+
       {
         tasks.length > 0 ?
           <Tasks tasks={tasks}
