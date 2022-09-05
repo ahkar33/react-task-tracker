@@ -13,18 +13,18 @@ const App = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getTasks = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/tasks');
-        setTasks(response.data);
-        console.log(tasks)
-      } catch (error) {
-        setError(error.message);
-        setTasks(null);
-      }
-    }
     getTasks();
   }, []);
+
+  const getTasks = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/tasks');
+      setTasks(response.data);
+    } catch (error) {
+      setError(error.message);
+      setTasks(null);
+    }
+  }
 
   const getOneTask = async (id) => {
     const res = await axios.get(`http://localhost:5000/tasks/${id}`)
